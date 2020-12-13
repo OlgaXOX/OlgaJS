@@ -49,7 +49,9 @@
 
         periodAmount = document.querySelector('.period-amount'),
         
-        additionalExpensesItem = document.querySelector('.additional_expenses-item');
+        additionalExpensesItem = document.querySelector('.additional_expenses-item'), 
+        
+        cancel = document.getElementById('cancel');        
 
         const appData = {
         budget: 0,
@@ -67,7 +69,7 @@
         mission: 50000,               
 
         start: function() {           
-            appData.budget = +salaryAmount.value;           
+            appData.budget = +salaryAmount.value;    
             
             appData.getExpenses();
 
@@ -86,6 +88,21 @@
             appData.getRangeValue();
 
             appData.showResult();
+
+            start.style.display = 'none'; 
+            
+            appData.cancel();   
+            
+        },
+        cancel: function() {              
+            cancel.style.display = ''; 
+            salaryAmount.disabled = 'true';
+            incomeItem.disabled = 'true';
+            additionalIncomeItem.disabled = 'true';
+            expensesItems.disabled = 'true';
+            additionalExpensesItem.disabled = 'true';
+            targetAmount.disabled = 'true';
+            periodSelect.style.disabled = 'true';
         },
         showResult: function() {
             budgetMonthValue.value = appData.budgetMonth;
@@ -96,10 +113,7 @@
             targetMonthValue.value = Math.ceil(appData.getTarghetMonth());
             incomePeriodValue.value = appData.calcPeriod();
             start.addEventListener('click', () =>  
-                incomePeriodValue.value = periodSelect.value * appData.budgetMonth);            
-            if (salaryAmount.value === '') {               
-              return;
-            }
+            incomePeriodValue.value = periodSelect.value * appData.budgetMonth);            
         }, 
         addExpensesBlock: function() {            
             let cloneExpensesItem = expensesItems[0].cloneNode(true);
@@ -193,13 +207,23 @@
         getRangeValue: function() {
             periodAmount.textContent = periodSelect.value;
         }
-    };
+    };    
     
+    start.addEventListener('click', function(){
+        if (salaryAmount.value === '') { 
+            alert('Введите данные о месячном доходе, они необходимы для расчета');              
+            return;
+        } 
+    });
     start.addEventListener('click', appData.start);
+    cancel.addEventListener('click', appData.cancel);
     expensesPlus.addEventListener('click', appData.addExpensesBlock);
     incomePlus.addEventListener('click', appData.addIncomeBlock);    
     periodSelect.addEventListener('focus', appData.getRangeValue);
 
+    
+    
+    
         
 
     
@@ -211,4 +235,4 @@
     //}
 
     
-
+     
